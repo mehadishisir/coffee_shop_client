@@ -4,14 +4,22 @@ const AddCoffee = () => {
   const handleAddCoffee = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
-    const quantity = form.quantity.value;
-    const supplier = form.supplier.value;
-    const taste = form.taste.value;
-    const price = form.price.value;
-    const details = form.details.value;
-    const photo = form.photo.value;
-    console.log(name, quantity, supplier, taste, price, details, photo);
+    const formData = new FormData(form);
+    const coffeeData = Object.fromEntries(formData.entries());
+    console.log(coffeeData);
+    // send coffeeData to server
+
+    fetch("http://localhost:3000/coffees", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(coffeeData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("after adding coffee:", data);
+      });
   };
   return (
     <div className="p-24">
