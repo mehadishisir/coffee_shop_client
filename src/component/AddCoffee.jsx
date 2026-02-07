@@ -1,4 +1,5 @@
 import React from "react";
+import Swal from "sweetalert2";
 
 const AddCoffee = () => {
   const handleAddCoffee = (e) => {
@@ -19,6 +20,14 @@ const AddCoffee = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("after adding coffee:", data);
+        form.reset();
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Drag me!",
+            icon: "success",
+            draggable: true,
+          });
+        }
       });
   };
   return (
