@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../Auth/AuthContext";
 
 const SignUp = () => {
+  const { signUp } = useContext(AuthContext);
+  console.log(signUp);
+
   const handleSignUp = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -8,6 +12,14 @@ const SignUp = () => {
     const email = formData.get("email");
     const password = formData.get("password");
     console.log(email, password);
+    signUp(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
