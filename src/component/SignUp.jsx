@@ -11,14 +11,20 @@ const SignUp = () => {
 
     const formdata = new FormData(form);
     // console.log(formdata);
-    const { email, password, ...userProfile } = Object.fromEntries(
-      formdata.entries(),
-    );
-    console.log({ email, password, userProfile });
+    const { email, password, ...rest } = Object.fromEntries(formdata.entries());
+
+    console.log({ email, password, ...rest });
     signUp(email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
+
+        const userProfile = {
+          ...rest,
+          email,
+          creationTime: user?.metadata?.creationTime,
+          lastSignInTime: user?.metadata?.lastSignInTime,
+        };
         // update user profile
         return fetch("http://localhost:3000/users", {
           method: "POST",
@@ -34,7 +40,7 @@ const SignUp = () => {
               Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: "Your work has been saved",
+                title: "Your profile been saved",
                 showConfirmButton: false,
                 timer: 1500,
               });
