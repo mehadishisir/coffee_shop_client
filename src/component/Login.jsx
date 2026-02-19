@@ -11,7 +11,27 @@ const Login = () => {
     const password = form.password.value;
     console.log(email, password);
     // firebase
-    logIn(email, password);
+    logIn(email, password)
+      .then((result) => {
+        console.log(result.user);
+        const logInInfo = {
+          email,
+          lastSignInTime: result?.user?.metadata?.lastSignInTime,
+        };
+        // send user
+        fetch("http://localhost:3000/users", {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(logInInfo),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data, "after save"));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
